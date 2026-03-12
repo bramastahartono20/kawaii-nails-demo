@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kawaii Nails & Spa — San Antonio, TX</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: #7a5f28;
+    --black: #050505;
+    --black-soft: #0e0e0e;
+    --black-card: #111111;
+    --white: #f5f0e8;
+    --white-dim: #a89d8a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ─── GOLD CURSOR ─── */
+  * { cursor: none !important; }
+  #cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, background 0.3s;
+    mix-blend-mode: screen;
+  }
+  #cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.3s, height 0.3s, opacity 0.3s;
+    opacity: 0.5;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(5,5,5,0.95), transparent);
+  }
+
+  .nav-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 50%, rgba(201,168,76,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(201,168,76,0.05) 0%, transparent 60%),
+      linear-gradient(135deg, #050505 0%, #0a0a0a 50%, #050505 100%);
+  }
+
+  /* Diamond pattern */
+  .hero-pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(45deg, rgba(201,168,76,0.03) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(201,168,76,0.03) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(201,168,76,0.03) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(201,168,76,0.03) 75%);
+    background-size: 60px 60px;
+    background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 20px;
+    animation: fadeUp 1.2s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(48px, 8vw, 100px);
+    font-weight: 400;
+    line-height: 1;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .hero-title span {
+    color: var(--gold);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 9vw, 110px);
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(16px, 2.5vw, 22px);
+    font-style: italic;
+    color: var(--white-dim);
+    margin-bottom: 50px;
+    letter-spacing: 0.1em;
+  }
+
+  .hero-divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 0 auto 50px;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    padding: 16px 48px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+    z-index: -1;
+  }
+
+  .hero-cta:hover {
+    color: var(--black);
+  }
+
+  .hero-cta:hover::before {
+    transform: translateX(0);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.4;
+    animation: fadeUp 1.2s 0.8s ease forwards;
+  }
+
+  .hero-scroll span {
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  /* ─── SECTION BASE ─── */
+  section {
+    padding: 120px 60px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  .section-title em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .section-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    margin-bottom: 60px;
+  }
+
+  /* ─── SERVICES ─── */
+  #services {
+    background: var(--black-soft);
+    max-width: 100%;
+    padding: 120px 0;
+  }
+
+  #services > .inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .service-card {
+    background: var(--black-card);
+    padding: 50px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px;
+    height: 0;
+    background: var(--gold);
+    transition: height 0.4s ease;
+  }
+
+  .service-card:hover::before { height: 100%; }
+  .service-card:hover { transform: translateY(-4px); }
+
+  .service-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 60px;
+    color: rgba(201,168,76,0.08);
+    line-height: 1;
+    margin-bottom: 20px;
+    font-weight: 300;
+  }
+
+  .service-name {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .service-desc {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--white-dim);
+    margin-bottom: 24px;
+  }
+
+  .service-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  /* ─── GALLERY ─── */
+  #gallery {
+    padding: 120px 60px;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    gap: 3px;
+    margin-top: 60px;
+  }
+
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    background: var(--black-card);
+  }
+
+  .gallery-item:first-child {
+    grid-row: span 2;
+  }
+
+  .gallery-placeholder {
+    width: 100%;
+    padding-bottom: 100%;
+    background: linear-gradient(135deg, #111 0%, #1a1610 50%, #111 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gallery-item:first-child .gallery-placeholder {
+    padding-bottom: 200%;
+  }
+
+  .gallery-placeholder::after {
+    content: '✦';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: rgba(201,168,76,0.2);
+  }
+
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(201,168,76,0.1);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+  .gallery-note {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gold-dim);
+    font-style: italic;
+  }
+
+  /* ─── ABOUT ─── */
+  #about {
+    background: var(--black-soft);
+    max-width: 100%;
+    padding: 120px 0;
+  }
+
+  #about > .inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+  }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .about-frame {
+    width: 100%;
+    padding-bottom: 120%;
+    background: linear-gradient(135deg, #111 0%, #1a1610 100%);
+    position: relative;
+    border: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .about-frame::before {
+    content: '';
+    position: absolute;
+    top: -12px; left: -12px;
+    right: 12px; bottom: -12px;
+    border: 1px solid rgba(201,168,76,0.08);
+  }
+
+  .about-frame-label {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    background: var(--black);
+    border: 1px solid var(--gold-dim);
+    padding: 20px 30px;
+  }
+
+  .about-frame-label span {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+  }
+
+  .about-frame-label small {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+  }
+
+  .about-text p {
+    font-size: 14px;
+    line-height: 2;
+    color: var(--white-dim);
+    margin-bottom: 24px;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 50px;
+    padding-top: 50px;
+    border-top: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    margin-top: 6px;
+    display: block;
+  }
+
+  /* ─── BOOKING ─── */
+  #booking {
+    padding: 120px 60px;
+    text-align: center;
+  }
+
+  .booking-inner {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .booking-form {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .form-input {
+    background: var(--black-card);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 16px 20px;
+    color: var(--white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    width: 100%;
+    transition: border-color 0.3s;
+    outline: none;
+  }
+
+  .form-input::placeholder { color: var(--white-dim); }
+  .form-input:focus { border-color: var(--gold); }
+
+  .form-select {
+    background: var(--black-card);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 16px 20px;
+    color: var(--white-dim);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    width: 100%;
+    outline: none;
+    appearance: none;
+    transition: border-color 0.3s;
+  }
+
+  .form-select:focus { border-color: var(--gold); }
+
+  .form-btn {
+    background: transparent;
+    border: 1px solid var(--gold);
+    padding: 18px 60px;
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+
+  .form-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: translateY(100%);
+    transition: transform 0.4s;
+    z-index: -1;
+  }
+
+  .form-btn:hover { color: var(--black); }
+  .form-btn:hover::before { transform: translateY(0); }
+
+  /* ─── CONTACT BAR ─── */
+  #contact {
+    background: var(--black-soft);
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .contact-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 80px 60px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .contact-item {
+    padding: 40px;
+    text-align: center;
+    background: var(--black-card);
+  }
+
+  .contact-icon {
+    font-size: 20px;
+    margin-bottom: 16px;
+    display: block;
+    color: var(--gold);
+  }
+
+  .contact-label {
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .contact-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--white);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 40px 60px;
+    text-align: center;
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+
+  footer p {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--white-dim);
+  }
+
+  footer .footer-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  /* ─── SOCIAL ─── */
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 20px;
+  }
+
+  .social-links a {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .social-links a:hover { color: var(--gold); }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    #services > .inner, #about > .inner { padding: 0 24px; }
+    #about > .inner { grid-template-columns: 1fr; gap: 50px; }
+    .contact-inner { grid-template-columns: 1fr; padding: 40px 24px; }
+    .form-row { grid-template-columns: 1fr; }
+    #gallery { padding: 80px 24px; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .gallery-item:first-child { grid-row: span 1; }
+    footer { padding: 30px 24px; }
+    #booking { padding: 80px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Kawaii Nails & Spa</div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#booking">Book Now</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">San Antonio, Texas · Est. 2020</span>
+    <h1 class="hero-title">
+      Kawaii<br><span>Nails & Spa</span>
+    </h1>
+    <p class="hero-subtitle">Where artistry meets luxury</p>
+    <div class="hero-divider"></div>
+    <a href="#booking" class="hero-cta">Reserve Your Appointment</a>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div id="services">
+  <div class="inner">
+    <span class="section-label reveal">Our Services</span>
+    <h2 class="section-title reveal">The Art of <em>Beautiful Nails</em></h2>
+    <div class="section-divider reveal"></div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-number">01</div>
+        <div class="service-name">Manicure</div>
+        <p class="service-desc">Classic and gel manicures with meticulous shaping, cuticle care, and a flawless finish in hundreds of colors.</p>
+        <div class="service-price">From $25</div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-number">02</div>
+        <div class="service-name">Pedicure</div>
+        <p class="service-desc">Luxurious pedicure treatments that refresh and restore, from basic to spa-level relaxation experiences.</p>
+        <div class="service-price">From $35</div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-number">03</div>
+        <div class="service-name">Nail Art</div>
+        <p class="service-desc">Bespoke nail art from subtle French tips to intricate designs — our artists bring your vision to life.</p>
+        <div class="service-price">From $15</div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-number">04</div>
+        <div class="service-name">Acrylic & Extensions</div>
+        <p class="service-desc">Full sets, fills, and custom-length extensions crafted for durability and a natural, elegant look.</p>
+        <div class="service-price">From $45</div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-number">05</div>
+        <div class="service-name">Waxing</div>
+        <p class="service-desc">Professional waxing services for smooth, lasting results with care for even the most sensitive skin.</p>
+        <div class="service-price">From $10</div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-number">06</div>
+        <div class="service-name">Dip Powder</div>
+        <p class="service-desc">Long-lasting dip powder nails with rich pigment and a lightweight feel — no UV light required.</p>
+        <div class="service-price">From $40</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <span class="section-label reveal">Portfolio</span>
+  <h2 class="section-title reveal">Our <em>Work</em></h2>
+  <div class="section-divider reveal"></div>
+  <div class="gallery-grid reveal">
+    <div class="gallery-item">
+      <div class="gallery-placeholder"></div>
+      <div class="gallery-overlay"></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-placeholder"></div>
+      <div class="gallery-overlay"></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-placeholder"></div>
+      <div class="gallery-overlay"></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-placeholder"></div>
+      <div class="gallery-overlay"></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-placeholder"></div>
+      <div class="gallery-overlay"></div>
+    </div>
+  </div>
+  <p class="gallery-note reveal">✦ Gallery filled with your photos upon launch ✦</p>
+</section>
+
+<!-- ABOUT -->
+<div id="about">
+  <div class="inner">
+    <div class="about-visual reveal">
+      <div class="about-frame">
+        <div class="about-frame-label">
+          <span>330+</span>
+          <small>Happy Clients</small>
+        </div>
+      </div>
+    </div>
+    <div class="about-text">
+      <span class="section-label reveal">Our Story</span>
+      <h2 class="section-title reveal">Luxury You <em>Deserve</em></h2>
+      <div class="section-divider reveal"></div>
+      <p class="reveal">At Kawaii Nails & Spa, we believe every visit should feel like a ritual — not just a routine. Our skilled nail artists combine precision technique with a genuine passion for beauty.</p>
+      <p class="reveal">Located in the heart of San Antonio, we welcome walk-ins and love making our clients feel at home in a space designed for comfort and elegance.</p>
+      <div class="about-stats reveal">
+        <div>
+          <span class="stat-number">4.9★</span>
+          <span class="stat-label">Google Rating</span>
+        </div>
+        <div>
+          <span class="stat-number">330+</span>
+          <span class="stat-label">Google Reviews</span>
+        </div>
+        <div>
+          <span class="stat-number">6+</span>
+          <span class="stat-label">Services Offered</span>
+        </div>
+        <div>
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Walk-ins Welcome</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOOKING -->
+<section id="booking">
+  <div class="booking-inner">
+    <span class="section-label reveal">Appointments</span>
+    <h2 class="section-title reveal">Book Your <em>Visit</em></h2>
+    <div class="section-divider" style="margin: 0 auto 20px;"></div>
+    <p style="font-size:13px; color:var(--white-dim); line-height:2;" class="reveal">Reserve your spot online or call us directly. Walk-ins always welcome.</p>
+    <div class="booking-form reveal">
+      <div class="form-row">
+        <input class="form-input" type="text" placeholder="Your Name">
+        <input class="form-input" type="tel" placeholder="Phone Number">
+      </div>
+      <div class="form-row">
+        <input class="form-input" type="date">
+        <select class="form-select">
+          <option value="" disabled selected>Select Service</option>
+          <option>Manicure</option>
+          <option>Pedicure</option>
+          <option>Nail Art</option>
+          <option>Acrylic & Extensions</option>
+          <option>Waxing</option>
+          <option>Dip Powder</option>
+        </select>
+      </div>
+      <textarea class="form-input" rows="3" placeholder="Any special requests or notes..."></textarea>
+      <button class="form-btn">Request Appointment</button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div id="contact">
+  <div class="contact-inner">
+    <div class="contact-item reveal">
+      <span class="contact-icon">✦</span>
+      <span class="contact-label">Location</span>
+      <span class="contact-value">9234N 1604W #117<br>San Antonio, TX 78249</span>
+    </div>
+    <div class="contact-item reveal">
+      <span class="contact-icon">✦</span>
+      <span class="contact-label">Phone</span>
+      <span class="contact-value">(210) 370-3360</span>
+    </div>
+    <div class="contact-item reveal">
+      <span class="contact-icon">✦</span>
+      <span class="contact-label">Hours</span>
+      <span class="contact-value">Mon–Sat: 9:30am – 7pm<br>Sun: 11am – 6pm</span>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Kawaii Nails & Spa</span>
+  <div class="social-links">
+    <a href="#">Facebook</a>
+    <a href="#">Instagram</a>
+    <a href="#">TikTok</a>
+  </div>
+  <p style="margin-top:20px;">© 2025 Kawaii Nails & Spa LLC · San Antonio, Texas</p>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 80);
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
